@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <ctype.h>
  
 // leftrotate function definition
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
@@ -124,31 +126,40 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
 
 int main(int argc, char **argv) {
 
-	if (argc < 2) {
-        printf("Corect usage: %s 'string'\n", argv[0]);
-        return 1;
+	char *msg = "";
+	if(!strcmp(argv[1], "--help")){
+
+		printf("Information on how to run the application:\n");
+		printf("Type: ./md5 --run ''your string here''\n");
+
 	}
-	 
-	char *msg = argv[1];
-	size_t len = strlen(msg);
+	else if(!strcmp(argv[1], "--run")){
+			
+	char *msg = argv[2];
+    	size_t len = strlen(msg);
 
         md5(msg, len);
- 
-	uint8_t *p;
- 
-	// Output
-	p=(uint8_t *)&h0;
-	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h0);
- 	
-	p=(uint8_t *)&h1;
-	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h1);
- 
-	p=(uint8_t *)&h2;
-	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h2);
- 	
-	p=(uint8_t *)&h3;
-	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h3);
-	puts("");
- 
-    return 0;
+    	uint8_t *p;
+
+    	// Output
+    	p=(uint8_t *)&h0;
+    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h0);
+
+    	p=(uint8_t *)&h1;
+    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h1);
+
+    	p=(uint8_t *)&h2;
+    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h2);
+
+    	p=(uint8_t *)&h3;
+    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h3);
+    	puts("");
+
+    	return 0;
+	}
+	else{
+		
+	printf("Invalid arguments, type --help on information how to successfully run the application.\n");
+	}
+
 }
