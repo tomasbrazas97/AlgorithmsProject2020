@@ -17,14 +17,19 @@
 // These variables  will store the hash
 uint32_t h0, h1, h2, h3;
 
+// Main MD5 function 
 void md5(uint8_t *initial_msg, size_t initial_len) {
+	
+	// Message
 	uint8_t *msg = NULL;
-
+	
+	// Per-round shift amounts
 	uint32_t r[] = {7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22,
                     5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20, 5,  9, 14, 20,
                     4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23,
                     6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21};
 	
+	// Using binary integers part of the sines of intergers (in radians) as constants
 	uint32_t k[] = {
         	0xd76aa478, 0xe8c7b756, 0x242070db, 0xc1bdceee,
         	0xf57c0faf, 0x4787c62a, 0xa8304613, 0xfd469501,
@@ -42,32 +47,44 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
         	0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1,
         	0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1,
         	0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391};
-	
+
+	// Initializing
 	h0 = 0x67452301;
 	h1 = 0xefcdab89;
 	h2 = 0x98badcfe;
 	h3 = 0x10325476;
 	
+	// Pre-processing
+	// Appending 1 bit to message
+	// Padding with zeros
+	// Append 0 bit until msg length in bits = 448 (mod 512)
+	// Append length mod (2 pow 64) to message
 	int new_len = ((((initial_len + 8) / 64) + 1) * 64) - 8;
 	
-	msg = calloc(new_len + 64, 1);
+	msg = calloc(new_len + 64, 1); // 
 	memcpy(msg, initial_msg, initial_len);
 	msg[initial_len] = 128;
 
-	uint32_t bits_len = 8*initial_len;
+	// Append len, copy in bits at the end of the buffer
+	uint32_t bits_len = 8*initial_len; 
 	memcpy(msg + new_len, &bits_len, 4);      
-
+	
+	// Process the message in successive 512-bit chunks
 	int offset;
 	for(offset=0; offset<new_len; offset += (512/8)) {
-
+	
+	// Breaks the chunk into 16 32-bit words
         uint32_t *w = (uint32_t *) (msg + offset);
 
+	// Initializing hash value for the chunk
         uint32_t a = h0;
         uint32_t b = h1;
         uint32_t c = h2;
         uint32_t d = h3;
 
         uint32_t i;
+
+	// Main loop, rounds 
         for(i = 0; i<64; i++) {
 
 #ifdef ROUNDS
@@ -115,17 +132,19 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
 	
 
         }
-
+	
+	// Chunk's of hash added to the result
         h0 += a;
         h1 += b;
         h2 += c;
         h3 += d;
 
     }
+    // deallocates the memory previously allocated
     free(msg);
 }
 
-
+// Tests
 static char *val[] = {
     "d41d8cd98f00b204e9800998ecf8427e",
     "0cc175b9c0f1b6a831c399e269772661",
@@ -147,25 +166,28 @@ static char *tests[] = {
         "345678901234567890"
 };
 
-
+// Main 
 int main(int argc, char **argv) {
-
+	
 	char *msg = "";
+	// If/else if/else to compare command line arguments
 	if(!strcmp(argv[1], "--help")){
 
 		printf("Information on how to run the application:\n");
 		printf("\n");
 		printf("To Run Type: ./md5 --run ''your string here''\n");
-		printf("For Tests Type: ./md5 --x" );
-		printf("For Time Trial Type: ./md5 --t ''your string here''");
+		printf("For Tests Type: ./md5 --x\n" );
+		printf("For Time Trial Type: ./md5 --t ''your string here''\n");
 
 	}
 	else if(!strcmp(argv[1], "--run")){
 			
 		char *msg = argv[2];
     		size_t len = strlen(msg);
-
+		
+		// passed into MD5
         	md5(msg, len);
+		// Little Edian output
     		uint8_t *p;
 
     		// Output
@@ -185,7 +207,7 @@ int main(int argc, char **argv) {
     		return 0;
 	}
 	else if(!strcmp(argv[1], "--x")){
-		
+	// Tests
 	/*	char *msg = tests[1];
     		size_t len = strlen(msg);
 
@@ -200,11 +222,12 @@ int main(int argc, char **argv) {
 
     	return 0;
    	 }
-	else if(!strcmp(argv[1], "--t")){
+	else if(!strcmp(argv[1], "--t")){ // Time from C libraries
 
 		clock_t start, end;
 		double cpu_time_used;
-
+		
+		// start time
 		start = clock();
 		char *msg = argv[2];
     		size_t len = strlen(msg);
@@ -212,9 +235,11 @@ int main(int argc, char **argv) {
         	md5(msg, len);
    
     		uint8_t *p;
-
+		
+		// stop time
     		end = clock();
-
+		
+		// Time in seconds
     		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
 
     		printf("Time taken to hash the string:  %f\n", cpu_time_used);
