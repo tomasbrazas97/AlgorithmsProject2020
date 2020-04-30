@@ -9,7 +9,8 @@
 #include <stdint.h>
 #include <unistd.h>
 #include <ctype.h>
- 
+#include <time.h>
+
 // leftrotate function definition
 #define LEFTROTATE(x, c) (((x) << (c)) | ((x) >> (32 - (c))))
  
@@ -124,42 +125,104 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
     free(msg);
 }
 
+
+static char *val[] = {
+    "d41d8cd98f00b204e9800998ecf8427e",
+    "0cc175b9c0f1b6a831c399e269772661",
+    "900150983cd24fb0d6963f7d28e17f72",
+    "f96b697d7cb7938d525a2f31aaf161d0",
+    "c3fcd3d76192e4007dfb496cca67e13b",
+    "d174ab98d277d9f5a5611c2c9f419d9f",
+    "57edf4a22be3c955ac49da2e2107b67a"
+};
+
+static char *tests[] = {
+    "",
+    "a",
+    "abc",
+    "message digest",
+    "abcdefghijklmnopqrstuvwxyz",
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",
+    "12345678901234567890123456789012345678901234567890123456789012" \
+        "345678901234567890"
+};
+
+
 int main(int argc, char **argv) {
 
 	char *msg = "";
 	if(!strcmp(argv[1], "--help")){
 
 		printf("Information on how to run the application:\n");
-		printf("Type: ./md5 --run ''your string here''\n");
+		printf("\n");
+		printf("To Run Type: ./md5 --run ''your string here''\n");
+		printf("For Tests Type: ./md5 --x" );
+		printf("For Time Trial Type: ./md5 --t ''your string here''");
 
 	}
 	else if(!strcmp(argv[1], "--run")){
 			
-	char *msg = argv[2];
-    	size_t len = strlen(msg);
+		char *msg = argv[2];
+    		size_t len = strlen(msg);
 
-        md5(msg, len);
-    	uint8_t *p;
+        	md5(msg, len);
+    		uint8_t *p;
 
-    	// Output
-    	p=(uint8_t *)&h0;
-    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h0);
+    		// Output
+    		p=(uint8_t *)&h0;
+    		printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h0);
 
-    	p=(uint8_t *)&h1;
-    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h1);
+    		p=(uint8_t *)&h1;
+    		printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h1);
 
-    	p=(uint8_t *)&h2;
-    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h2);
+    		p=(uint8_t *)&h2;
+    		printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h2);
 
-    	p=(uint8_t *)&h3;
-    	printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h3);
-    	puts("");
+    		p=(uint8_t *)&h3;
+    		printf("%2.2x%2.2x%2.2x%2.2x", p[0], p[1], p[2], p[3], h3);
+    		puts("");
 
+    		return 0;
+	}
+	else if(!strcmp(argv[1], "--x")){
+		
+	/*	char *msg = tests[1];
+    		size_t len = strlen(msg);
+
+		int i = 0,j;
+
+		if (memcmp( *p, val[i], 32))
+		{
+			printf( "failed\n");
+			return(1);
+		}
+		printf("passed");*/
+
+    	return 0;
+   	 }
+	else if(!strcmp(argv[1], "--t")){
+
+		clock_t start, end;
+		double cpu_time_used;
+
+		start = clock();
+		char *msg = argv[2];
+    		size_t len = strlen(msg);
+
+        	md5(msg, len);
+   
+    		uint8_t *p;
+
+    		end = clock();
+
+    		cpu_time_used = ((double) (end - start)) / CLOCKS_PER_SEC;
+
+    		printf("Time taken to hash the string:  %f\n", cpu_time_used);
     	return 0;
 	}
 	else{
 		
-	printf("Invalid arguments, type --help on information how to successfully run the application.\n");
+		printf("Invalid arguments, type --help on information how to successfully run the application.\n");
 	}
 
 }
