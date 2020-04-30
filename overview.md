@@ -79,3 +79,15 @@ MD5 is not widely used anymore, due to searching common hash value on Google som
 <br>
 
 In conclusion, the MD5 algorithm should not be used in any security applications because collisions can be generated. Although it is very fast, not always secure. MD5 has joined the graveyard of broken hash functions, examples of other broken hash functions that should be avoided are SHA-1, MD4, LAN Manager and Message Authenticator Algorithm. An example of a better hashing algorithm is SHA3, it is believed to be very secure.
+
+
+### References
+https://en.wikipedia.org/wiki/Brute-force_attack
+Used this to help me understand the knowledge about brute-forcing. Used in Complexity.
+
+https://automationrhapsody.com/md5-sha-1-sha-256-sha-512-speed-performance/
+Studied this to help me understand the security and speed performance of the various hashing algorithms. Used in Algorithms.
+
+https://tools.ietf.org/html/rfc1321
+Code that I studied to write my MD5 application. Used in md5.c and Tests.
+
