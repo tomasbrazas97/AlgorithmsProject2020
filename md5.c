@@ -45,9 +45,7 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
 	h2 = 0x98badcfe;
 	h3 = 0x10325476;
 	
-	int new_len;
-	for(new_len = initial_len*8 + 1; new_len%512!=448; new_len++);
-	new_len /= 8;
+	int new_len = ((((initial_len + 8) / 64) + 1) * 64) - 8;
 	
 	msg = calloc(new_len + 64, 1);
 	memcpy(msg, initial_msg, initial_len);
@@ -127,7 +125,7 @@ void md5(uint8_t *initial_msg, size_t initial_len) {
 int main(int argc, char **argv) {
 
 	if (argc < 2) {
-        printf("usage: %s 'string'\n", argv[0]);
+        printf("Corect usage: %s 'string'\n", argv[0]);
         return 1;
 	}
 	 
