@@ -73,21 +73,35 @@ Pad the message so its length is 448 mod 512. Padding is always added. The numbe
 Appending length, is done by appending to 64 bit of the original message. If original's length is greater than 2^64 only low-order 64 bits of the length are used. The MD buffer is a 128-bit buffer. It is used too hold the final results of the hash function, 4 32-bit registers. Stored in little-edian format. Then the message is processed in 512bit blocks. Consists of 4 "rounds" of processing, 16 steps each. Each of the rounds a similar structure wise but have different logical functions.The output from the previous stage is the 128-bit message digest.
 
 ### Complexity
-The MD5 algorithm is one of the fastest hashing algorithms comparing it to SHA-1, SHA-256 and SHA-512. It is on par with SHA-1 but both have been compromised (have been broken and are not deemed secure). MD5 is one of the faster ones because it produces a 128-bit hash value which is 32 characters long, in comparison to SHA-512's 128 character hash value. SHA-512 is approximately 33% slower. MD5 can perform 1 million calculations in 627.4ms meanwhile, SHA-512 calculates the same amount of calculations in 1056.4ms.<br>
+The MD5 algorithm is one of the fastest hashing algorithms comparing it to SHA-1, SHA-256 and SHA-512. It is on par with SHA-1 but both have been compromised (have been broken and are not deemed secure). MD5 is one of the faster ones because it produces a 128-bit hash value which is 32 characters long, in comparison to SHA-512's 128 character hash value. SHA-512 is approximately 33% slower. MD5 can perform 1 million calculations in 627.4ms meanwhile, SHA-512 calculates the same amount of calculations in 1056.4ms. MD5 cannot be implemented in exisiting technology at rates in excess of 100Mbps. MD5 cannot be used to support IP authentication in existing networks at exisiting rates.<br>
 <br>
 MD5 is not widely used anymore, due to searching common hash value on Google sometimes gives the plain text. The most efficient way to break a MD5 hash value and revert it to an input is using the Brute Force algorithm. Hashcat can run the attack on GPU's making it possible to perform many hash calculations in parrallel. A brute-force attack consits of an attacker who has bad intentions and has your login creditentials. The person submits many password phrases of hope getting one correct eventually. Systematically checking until correct one is found. A tool that can be used for their advantage is HashCat. Hashcat is an open source password recovery tool. It supports the algorithms of MD4, MD5 and SHA-family. This is why passwords have recently became very strict, must constist the use of uppercase letters, symbols, lowercase letters and numbers. Sometimes they cannot be closely related to the login. Companies are taking this measures to prevent consumers data being stolen by brute force attackers.
 <br>
-
+Hashcat is the "world's fastest password cracker". It is mainly used because it is free, which means it's accesible by everybody around the globe. This application is very popular in countries that have high wealth gaps. It's multi-platform and can break multiple hashes. Hashcat open-source link: https://github.com/hashcat/hashcat ![hatch](https://pbs.twimg.com/media/DvX7Z_jW0AIMv4i.png)
+<br>
 In conclusion, the MD5 algorithm should not be used in any security applications because collisions can be generated. Although it is very fast, not always secure. MD5 has joined the graveyard of broken hash functions, examples of other broken hash functions that should be avoided are SHA-1, MD4, LAN Manager and Message Authenticator Algorithm. An example of a better hashing algorithm is SHA3, it is believed to be very secure.
 
 
 ### References
-https://en.wikipedia.org/wiki/Brute-force_attack
+*https://en.wikipedia.org/wiki/Brute-force_attack
 Used this to help me understand the knowledge about brute-forcing. Used in Complexity.
 
-https://automationrhapsody.com/md5-sha-1-sha-256-sha-512-speed-performance/
+*https://automationrhapsody.com/md5-sha-1-sha-256-sha-512-speed-performance/
 Studied this to help me understand the security and speed performance of the various hashing algorithms. Used in Algorithms.
 
-https://tools.ietf.org/html/rfc1321
+*https://tools.ietf.org/html/rfc1321
 Code that I studied to write my MD5 application. Used in md5.c and Tests.
 
+*https://en.wikipedia.org/wiki/MD5
+Used this to study about MD5 algorithm to further my knowledge.
+
+*https://www.geeksforgeeks.org/command-line-arguments-in-c-cpp/
+Used to help me code the command line arguments that were needed for the application, --help, --run etc.
+
+*http://practicalcryptography.com/hashes/md5-hash/
+Used to further my knowledge in the algorithm. Understanding how it works in general. 
+
+*http://ccr.sigcomm.org/archive/1995/conf/touch.pdf
+Useful review about MD5, read this to strengthen knowledge.
+
+*Lecture videos from moodle, helped me to understand the basics of algorithms. Used in application.
